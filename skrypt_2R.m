@@ -33,7 +33,7 @@ errorB0_rand=[zeros(PathSize,1),randVal(0.1,0.01,PathSize),zeros(PathSize,1),zer
 error01_rand=[zeros(PathSize,1),zeros(PathSize,1),randVal(0.1,0.01,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
 error12_rand=[deg2rad(randVal(0.1,0.01,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),];
 tic
-[PathRealX,PathRealY,PathRealZ]=path_2R(th1_path,th2_path,PathSize,errorB0_rand,error01_rand,error12_rand);
+[PathRealX,PathRealY,PathRealZ]=path_2R(th1_path,th2_path,errorB0_rand,error01_rand,error12_rand);
 toc
 
 %% check

@@ -1,4 +1,4 @@
-function [PosX,PosY,PosZ] = path_2R(th1Val,th2Val,len,errorB0,error01,error12)
+function [PosX,PosY,PosZ] = path_2R(th1Val,th2Val,errorB0,error01,error12)
     syms th1 th2
     syms errorB0_1 errorB0_2 errorB0_3 errorB0_4 errorB0_5 errorB0_6
     syms error01_1 error01_2 error01_3 error01_4 error01_5 error01_6
