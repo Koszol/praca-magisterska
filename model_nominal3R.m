@@ -18,4 +18,3 @@ function [PosX,PosY, PosZ] = model_nominal3R(th1Val,th2Val,th3Val,len)
     PosY(1:len)=double(subs(Tra(2,4),{th1,th2,th3},{th1Val,th2Val,th3Val}));
     PosZ(1:len)=double(subs(Tra(3,4),{th1,th2,th3},{th1Val,th2Val,th3Val}));
 end
-

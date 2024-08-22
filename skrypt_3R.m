@@ -17,7 +17,7 @@ th3=0;
 errorB0=[deg2rad(0.105),0.082,0.12,deg2rad(0.084),0,0];  % dth dz dx dalfa dy dfi  
 error01=[deg2rad(-0.156),0.088,-0.729,deg2rad(0.037),0,0];
 error12=[deg2rad(-1.192),-0.404,0.229,deg2rad(0.017),0,0];
-error23=[deg2rad(0.479),0.106,-0.068,deg2rad(0.181),0,0];  % 4
+    error23=[deg2rad(0.479),0.106,-0.068,deg2rad(0.181),0,0];  % 4
 error34=[deg2rad(-0.838),-0.085,-0.181,deg2rad(0.021),0,0];    % 5
 %% model skalibrowany
 [PosCalX,PosCalY,PosCalZ]=model_cal3R(th1,th2,th3,1,errorB0,error01,error12,error23,error34);
