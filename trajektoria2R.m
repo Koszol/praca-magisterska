@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 %% lissajous
-t=linspace(0,2*pi,100);
+t=linspace(0,2*pi,50);
 x=600*sin(t+pi/2);
 y=600*sin(3*t);
 plot(x,y)
@@ -18,4 +18,6 @@ th2_1=atan2(y-l1*sin(th1_1),x-l1*cos(th1_1))-th1_1;
 %% test
 X=l1*cos(th1_1)+l2*cos(th1_1+th2_1);
 Y=l1*sin(th1_1)+l2*sin(th1_1+th2_1);
-plot(X,Y)
+% plot(X,Y)
+traj=[th1_1;th2_1];
+save("traj2R.mat","traj")

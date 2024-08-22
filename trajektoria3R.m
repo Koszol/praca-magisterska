@@ -1,10 +1,15 @@
 clear all;
-t=linspace(0,2*pi,100);
+t=linspace(0,2*pi,20);
 x=500*sin(t+pi/2);
 y=500*sin(3*t);
-z=linspace(400,600,100);
+z=linspace(400,600,20);
 figure
 plot3(x,y,z)
+hold on
+grid on
+xlabel("Oś X [mm]")
+ylabel("Oś Y [mm]")
+zlabel("Oś Z [mm]")
 %% 
 % x=000;
 % y=900;
@@ -34,3 +39,5 @@ plot(th1)
 hold on
 plot(th2)
 plot(th3)
+traj=[th1;th2;th3];
+save("traj3R.mat","traj")
