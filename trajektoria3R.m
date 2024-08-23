@@ -1,8 +1,10 @@
 clear all;
-t=linspace(0,2*pi,20);
+close all;
+PathSize=30;
+t=linspace(0,2*pi,PathSize);
 x=500*sin(t+pi/2);
 y=500*sin(3*t);
-z=linspace(400,600,20);
+z=linspace(400,600,PathSize);
 figure
 plot3(x,y,z)
 hold on
@@ -10,6 +12,16 @@ grid on
 xlabel("Oś X [mm]")
 ylabel("Oś Y [mm]")
 zlabel("Oś Z [mm]")
+title("Przebieg trajektorii w rzucie izometrycznym")
+axis tight
+figure
+plot(x,y)
+hold on
+grid on
+xlabel("Oś X [mm]")
+ylabel("Oś Y [mm]")
+axis tight
+title("Przebieg trajektorii w rzucie z góry")
 %% 
 % x=000;
 % y=900;
@@ -35,9 +47,16 @@ th2=round((fi2-fi1),8);
 fi3=acos((l2^2+l3^2-r3.^2)./(-2*l2*l3))-alfa;
 th3=round((pi-fi3),8);
 figure
-plot(th1)
+plot(rad2deg(wrapToPi(th1)))
 hold on
-plot(th2)
-plot(th3)
+plot(rad2deg(wrapToPi(th2)))
+plot(rad2deg(wrapToPi(th3)))
+axis tight
+grid on
+xlabel("Czas [s]")
+ylabel("Kąt [stopnie]")
+legend("Kąt theta1","Kąt theta2")
+title("Wykres współrzędnych złączowych układu 3R")
+legend("Kąt theta1","Kąt theta2","Kąt theta3")
 traj=[th1;th2;th3];
 save("traj3R.mat","traj")

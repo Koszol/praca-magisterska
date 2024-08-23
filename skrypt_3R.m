@@ -8,11 +8,17 @@ th3=0;
 [PosX,PosY,PosZ]=model_nominal3R(th1,th2,th3,1);
 %% errors
 % przypadek 1
-% errorB0=[deg2rad(-0.466),0.0017,-0.3336,deg2rad(0.4641),0.0143,deg2rad(0.9586)];  % dth dz dx dalfa dy dfi  
-% error01=[deg2rad(0.0549),0.5595,1.1304,deg2rad(0.851),0,0];
-% error12=[deg2rad(-0.8206),0.94,0.6659,deg2rad(0.7131),0,0];
-% error23=[deg2rad(-0.0883),0.6466,-0.2763,deg2rad(0.9169),0,0];
-% error34=[deg2rad(0.2967),0.6303,-0.575,deg2rad(0.9087),0,deg2rad(0.7318)];
+% errorB0=[deg2rad(-0.0466),0.0017,0.4641,deg2rad(-0.3336),0.0143,deg2rad(0.9586)];  % dth dz dx dalfa dy dfi  
+% error01=[deg2rad(0.0549),0.5595,0.851,deg2rad(1.1304),0,0];
+% error12=[deg2rad(-0.8206),0.94,0.7131,deg2rad(0.6659),0,0];
+% error23=[deg2rad(-0.0883),0.6466,0.9169,deg2rad(-0.2763),0,0];
+% error34=[deg2rad(0.2967),0.6303,0.9087,deg2rad(-0.575),0,deg2rad(0.7318)];
+% przypadek 2
+% errorB0=[0,0,0,0,0,0];  % dth dz dx dalfa dy dfi  
+% error01=[deg2rad(0.042),0,0,0,0,0];
+% error12=[deg2rad(1.186),0,0,0,0,0];
+% error23=[deg2rad(0.445),0,0,0,0,0];
+% error34=[deg2rad(0.2967),0,0,0,0,0];
 % przypadek 3
 errorB0=[deg2rad(0.105),0.082,0.12,deg2rad(0.084),0,0];  % dth dz dx dalfa dy dfi  
 error01=[deg2rad(-0.156),0.088,-0.729,deg2rad(0.037),0,0];
@@ -36,13 +42,19 @@ std2=0.005;
 for i=1:10
     % std.*randn(1,PathSize)+mean
     % przypadek 1
-    % errorB0_rand=[deg2rad(randVal(-0.466,std1,PathSize)),randVal(0.0017,std2,PathSize),randVal(-0.3336,std1,PathSize),deg2rad(randVal(0.4641,std1,PathSize)),randVal(0.0143,std2,PathSize),deg2rad(randVal(0.9586,std1,PathSize))];
-    % error01_rand=[deg2rad(randVal(0.0549,std2,PathSize)),randVal(0.5595,std1,PathSize),randVal(1.1304,std1,PathSize),deg2rad(randVal(0.851,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
-    % error12_rand=[deg2rad(randVal(-0.8206,std1,PathSize)),randVal(0.94,std1,PathSize),randVal(0.6659,std1,PathSize),deg2rad(randVal(0.7131,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
-    % error23_rand=[deg2rad(randVal(-0.0883,std2,PathSize)),randVal(0.6466,std1,PathSize),randVal(-0.2763,std1,PathSize),deg2rad(randVal(0.9169,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
-    % error34_rand=[deg2rad(randVal(0.2967,std1,PathSize)),randVal(0.6303,std1,PathSize),randVal(-0.575,std1,PathSize),deg2rad(randVal(0.9087,std1,PathSize)),zeros(PathSize,1),deg2rad(randVal(0.7318,std1,PathSize))];
+%     errorB0_rand=[deg2rad(randVal(-0.0466,std2,PathSize)),randVal(0.0017,std2,PathSize),randVal(0.4641,std1,PathSize),deg2rad(randVal(-0.3336,std1,PathSize)),randVal(0.0143,std2,PathSize),deg2rad(randVal(0.9586,std1,PathSize))];
+%     error01_rand=[deg2rad(randVal(0.0549,std2,PathSize)),randVal(0.5595,std1,PathSize),randVal(0.851,std1,PathSize),deg2rad(randVal(1.1304,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
+%     error12_rand=[deg2rad(randVal(-0.8206,std1,PathSize)),randVal(0.94,std1,PathSize),randVal(0.7131,std1,PathSize),deg2rad(randVal(0.6659,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
+%     error23_rand=[deg2rad(randVal(-0.0883,std2,PathSize)),randVal(0.6466,std1,PathSize),randVal(0.9169,std1,PathSize),deg2rad(randVal(-0.2763,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
+%     error34_rand=[deg2rad(randVal(0.2967,std1,PathSize)),randVal(0.6303,std1,PathSize),randVal(0.9087,std1,PathSize),deg2rad(randVal(-0.575,std1,PathSize)),zeros(PathSize,1),deg2rad(randVal(0.7318,std1,PathSize))];
     % przypadek 2
-    errorB0_rand=[deg2rad(randVal(0.105,std1,PathSize)),randVal(0.0082,std2,PathSize),randVal(0.12,std1,PathSize),deg2rad(randVal(0.084,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
+%     errorB0_rand=[zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error01_rand=[deg2rad(randVal(0.042,std2,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error12_rand=[deg2rad(randVal(1.186,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error23_rand=[deg2rad(randVal(0.445,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error34_rand=[zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+    % przypadek 3
+    errorB0_rand=[deg2rad(randVal(0.105,std1,PathSize)),randVal(0.0082,std2,PathSize),randVal(0.12,std1,PathSize),deg2rad(randVal(0.084,std2,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
     error01_rand=[deg2rad(randVal(-0.156,std1,PathSize)),randVal(0.088,std2,PathSize),randVal(-0.729,std1,PathSize),deg2rad(randVal(0.037,std2,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
     error12_rand=[deg2rad(randVal(-1.192,std1,PathSize)),randVal(-0.404,std1,PathSize),randVal(0.229,std1,PathSize),deg2rad(randVal(0.017,std2,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
     error23_rand=[deg2rad(randVal(0.479,std1,PathSize)),randVal(0.106,std1,PathSize),randVal(-0.068,std2,PathSize),deg2rad(randVal(0.181,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1)];
@@ -59,15 +71,16 @@ end
 %% check
 error_nominal_mean(1,1:PathSize)=mean(error_nominal(:,1:PathSize));
 error_cal_mean(1,1:PathSize)=mean(error_cal(:,1:PathSize));
-plot(error_nominal_mean)
-hold on
-plot(error_cal_mean)
+% plot(error_nominal_mean)
+% hold on
+% plot(error_cal_mean)
 
 j=1;
 x_errorbar=1:1:PathSize;
 for i=x_errorbar;
     nom_min=min(error_nominal(:,i));
     nom_max=max(error_nominal(:,i));
+    nom_std(i)=std(error_nominal(:,i));
     nom_mean=error_nominal_mean(i);
     if abs(nom_mean-nom_max)>abs(nom_mean-nom_min)
         nom_errorbar(j)=abs(nom_mean-nom_max);
@@ -77,6 +90,7 @@ for i=x_errorbar;
     cal_min=min(error_cal(:,i));
     cal_max=max(error_cal(:,i));
     cal_mean=error_cal_mean(i);
+    cal_std(i)=std(error_cal(:,i));
     if abs(cal_mean-cal_max)>abs(cal_mean-cal_min)
         cal_errorbar(j)=abs(cal_mean-cal_max);
     else
@@ -94,3 +108,7 @@ xlabel("Numer próbki [-]")
 ylabel("Odległość [mm]")
 grid on
 axis tight
+sr_blad_nominal=mean(error_nominal_mean)
+sr_odch_stand_nominal=mean(nom_std)
+sr_blad_cal=mean(error_cal_mean)
+sr_odch_stand_cal=mean(cal_std)
