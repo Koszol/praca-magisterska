@@ -90,7 +90,7 @@ errorbar(x_errorbar,error_nominal_mean,nom_errorbar)
 hold on
 errorbar(x_errorbar,error_cal_mean,cal_errorbar)
 title("Odległość od rzeczywistego położenia robota")
-legend('Przed kalibracją','Po kalibracji')
+legend('Model nominalny','Model skalibrowany')
 xlabel("Numer próbki")
 ylabel("Odległość [mm]")
 grid on
