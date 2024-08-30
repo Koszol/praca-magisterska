@@ -19,10 +19,10 @@ error12=[deg2rad(1.186),0,0,deg2rad(0),0,0];
 % error01=[deg2rad(-0.156),0,-0.729,deg2rad(0),0,0];
 % error12=[deg2rad(-1.192),0,0.229,deg2rad(0),0,0];
 %% model skalibrowany
-[PosCalX,PosCalY,PosCalZ]=model_cal2R(th1,th2,1,errorB0,error01,error12);
-delta_x=PosCalX-PosX;
-delta_y=PosCalY-PosY;
-delta_z=PosCalZ-PosZ;
+[PosrealX,PosrealY,PosrealZ]=model_real2R(th1,th2,1,errorB0,error01,error12);
+delta_x=PosrealX-PosX;
+delta_y=PosrealY-PosY;
+delta_z=PosrealZ-PosZ;
 Distance=sqrt(delta_x.^2+delta_y.^2+delta_z.^2)
 %% ścieżka testowa
 load("traj2R.mat")
@@ -30,7 +30,7 @@ th1_path=traj(1,:);
 th2_path=traj(2,:);
 PathSize=length(th1_path);
 [PathX(1:PathSize),PathY(1:PathSize),PathZ(1:PathSize)]=model_nominal2R(th1_path,th2_path,PathSize);
-[PathCalX(1:PathSize),PathCalY(1:PathSize),PathCalZ(1:PathSize)]=model_cal2R(th1_path,th2_path,PathSize,errorB0,error01,error12);
+[PathrealX(1:PathSize),PathrealY(1:PathSize),PathrealZ(1:PathSize)]=model_real2R(th1_path,th2_path,PathSize,errorB0,error01,error12);
 %% normally distributed random errors 
 % dth dz dx dalfa dy dfi
 std1=0.03;
@@ -54,15 +54,15 @@ for i=1:10
     [PathRealX(i,:),PathRealY(i,:),PathRealZ(i,:)]=path_2R(th1_path,th2_path,errorB0_rand,error01_rand,error12_rand);
     delta_nominal=[PathRealX(i,:)-PathX;PathRealY(i,:)-PathY;PathRealZ(i,:)-PathZ];
     error_nominal(i,1:PathSize)=sqrt(delta_nominal(1,:).^2+delta_nominal(2,:).^2+delta_nominal(3,:).^2);
-    delta_cal=[PathRealX(i,:)-PathCalX;PathRealY(i,:)-PathCalY;PathRealZ(i,:)-PathCalZ];
-    error_cal(i,1:PathSize)=sqrt(delta_cal(1,:).^2+delta_cal(2,:).^2+delta_cal(3,:).^2);    
+    delta_real=[PathRealX(i,:)-PathrealX;PathRealY(i,:)-PathrealY;PathRealZ(i,:)-PathrealZ];
+    error_real(i,1:PathSize)=sqrt(delta_real(1,:).^2+delta_real(2,:).^2+delta_real(3,:).^2);    
     toc
    
 end
 
 %% check
 error_nominal_mean(1,1:PathSize)=mean(error_nominal(:,1:PathSize));
-error_cal_mean(1,1:PathSize)=mean(error_cal(:,1:PathSize));
+error_real_mean(1,1:PathSize)=mean(error_real(:,1:PathSize));
 j=1;
 x_errorbar=1:1:PathSize;
 for i=x_errorbar;
@@ -75,23 +75,34 @@ for i=x_errorbar;
     else
         nom_errorbar(j)=abs(nom_mean-nom_min);
     end
-    cal_min=min(error_cal(:,i));
-    cal_max=max(error_cal(:,i));
-    cal_std(i)=std(error_cal(:,i));
-    cal_mean=error_cal_mean(i);
-    if abs(cal_mean-cal_max)>abs(cal_mean-cal_min)
-        cal_errorbar(j)=abs(cal_mean-cal_max);
+    real_min=min(error_real(:,i));
+    real_max=max(error_real(:,i));
+    real_std(i)=std(error_real(:,i));
+    real_mean=error_real_mean(i);
+    if abs(real_mean-real_max)>abs(real_mean-real_min)
+        real_errorbar(j)=abs(real_mean-real_max);
     else
-        cal_errorbar(j)=abs(cal_mean-cal_min);
+        real_errorbar(j)=abs(real_mean-real_min);
     end
     j=j+1;
 end
-
-
+%% kalibracja
+X_real(1,:)=mean(PathRealX);
+Y_real(1,:)=mean(PathRealY);
+Z_real(1,:)=mean(PathRealZ);
+save("RealVal.mat","X_real","Y_real","Z_real")
+x0=[0;0;0;0;0;0;0;0];
+parametr=lsqnonlin(@myfun,x0)
+x1=parametr(1);
+x2=parametr(3);
+x3=parametr(5);
+x4=parametr(7);
+[CalX,CalY,CalZ]=model_cal2R(th1_path,th2_path,500,400,x1,x2,x3,x4)
+%% wykresy
 figure
 errorbar(x_errorbar,error_nominal_mean,nom_errorbar)
 hold on
-errorbar(x_errorbar,error_cal_mean,cal_errorbar)
+errorbar(x_errorbar,error_real_mean,real_errorbar)
 title("Odległość od rzeczywistego położenia robota")
 legend('Model nominalny','Model skalibrowany')
 xlabel("Numer próbki")
@@ -100,5 +111,31 @@ grid on
 axis tight
 sr_blad_nominal=mean(error_nominal_mean)
 sr_odch_stand_nominal=mean(nom_std)
-sr_blad_cal=mean(error_cal_mean)
-sr_odch_stand_cal=mean(cal_std)
+sr_blad_real=mean(error_real_mean)
+sr_odch_stand_real=mean(real_std)
+
+
+function F=myfun(x)
+    load("traj2R.mat")
+    load("RealVal.mat")
+    th1_path=traj(1,:);
+    th2_path=traj(2,:);
+    Tn=nom_sym;
+    syms th1 d1 a1 al1; 
+    syms th2 d2 a2 al2;
+    XYZ_nom=Tn(1:3,4);
+    X_nominalne(1,:)=double(subs(XYZ_nom(1,1),{th1,d1,a1,al1,th2,d2,a2,al2},{th1_path+x(1),x(2),500+x(3),x(4),th2_path+x(5),x(6),400+x(7),x(8)}));
+    Y_nominalne(1,:)=double(subs(XYZ_nom(2,1),{th1,d1,a1,al1,th2,d2,a2,al2},{th1_path+x(1),x(2),500+x(3),x(4),th2_path+x(5),x(6),400+x(7),x(8)}));
+    Z_nominalne(1,:)=double(subs(XYZ_nom(3,1),{th1,d1,a1,al1,th2,d2,a2,al2},{th1_path+x(1),x(2),500+x(3),x(4),th2_path+x(5),x(6),400+x(7),x(8)}));
+    F(:,:)=[X_real(1,:)-X_nominalne(1,:);Y_real(1,:)-Y_nominalne(1,:);Z_real(1,:)-Z_nominalne(1,:)]
+end
+
+function [PosX,PosY,PosZ]=model_cal2R(th1V,th2V,a1V,a2V,x1V,x2V,x3V,x4V)
+    syms th1 th2 a1 a2 x1 x2 x3 x4
+    A1=mA(th1+x1,0,a1+x2,0);
+    A2=mA(th2+x3,0,a2+x4,0);
+    Tra=A1*A2;
+    PosX=double(subs(Tra(1,4),{th1,th2,a1,a2,x1,x2,x3,x4},{th1V,th2V,a1V,a2V,x1V,x2V,x3V,x4V}));
+    PosY=double(subs(Tra(2,4),{th1,th2,a1,a2,x1,x2,x3,x4},{th1V,th2V,a1V,a2V,x1V,x2V,x3V,x4V}));
+    PosZ=double(subs(Tra(3,4),{th1,th2,a1,a2,x1,x2,x3,x4},{th1V,th2V,a1V,a2V,x1V,x2V,x3V,x4V}));
+end

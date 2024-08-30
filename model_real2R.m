@@ -1,4 +1,4 @@
-function [PosX,PosY,PosZ] = model_cal2R(th1Val,th2Val,len,errorB0,error01,error12)
+function [PosX,PosY,PosZ] = model_real2R(th1Val,th2Val,len,errorB0,error01,error12)
     syms th1 th2
 %     th1_val=th1Val;
 %     th2_val=th2Val;

@@ -1,6 +1,6 @@
 clear all;
 close all;
-PathSize=30;
+PathSize=100;
 t=linspace(0,2*pi,PathSize);
 x=500*sin(t+pi/2);
 y=500*sin(3*t);
@@ -46,11 +46,14 @@ fi1=acos((r3.^2+l2^2-l3^2)./(2*l2.*r3));
 th2=round((fi2-fi1),8);
 fi3=acos((l2^2+l3^2-r3.^2)./(-2*l2*l3))-alfa;
 th3=round((pi-fi3),8);
+th1=unwrap(th1);
+th2=unwrap(th2);
+th3=unwrap(th3);
 figure
-plot(rad2deg(wrapToPi(th1)))
+plot(rad2deg(th1))
 hold on
-plot(rad2deg(wrapToPi(th2)))
-plot(rad2deg(wrapToPi(th3)))
+plot(rad2deg(th2))
+plot(rad2deg(th3))
 axis tight
 grid on
 xlabel("Czas [s]")

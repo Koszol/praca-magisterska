@@ -26,7 +26,7 @@ error12=[deg2rad(-1.192),-0.404,0.229,deg2rad(0.017),0,0];
 error23=[deg2rad(0.479),0.106,-0.068,deg2rad(0.181),0,0];  % 4
 error34=[deg2rad(-0.838),-0.085,-0.181,deg2rad(0.021),0,0];    % 5
 %% model skalibrowany
-[PosCalX,PosCalY,PosCalZ]=model_cal3R(th1,th2,th3,1,errorB0,error01,error12,error23,error34);
+[PosrealX,PosrealY,PosrealZ]=model_real3R(th1,th2,th3,1,errorB0,error01,error12,error23,error34);
 %% ścieżka testowa
 load("traj3R.mat")
 th1_path=traj(1,:);
@@ -34,12 +34,12 @@ th2_path=traj(2,:);
 th3_path=traj(3,:);
 PathSize=length(th1_path);
 [PathX(1:PathSize),PathY(1:PathSize),PathZ(1:PathSize)]=model_nominal3R(th1_path,th2_path,th3_path,PathSize);
-[PathCalX(1:PathSize),PathCalY(1:PathSize),PathCalZ(1:PathSize)]=model_cal3R(th1_path,th2_path,th3_path,PathSize,errorB0,error01,error12,error23,error34);
+[PathrealX(1:PathSize),PathrealY(1:PathSize),PathrealZ(1:PathSize)]=model_real3R(th1_path,th2_path,th3_path,PathSize,errorB0,error01,error12,error23,error34);
 %% random errors
 % dth dz dx dalfa dy dfi
 std1=0.03;
 std2=0.005;
-for i=1:10
+for i=1:3
     % std.*randn(1,PathSize)+mean
     % przypadek 1
 %     errorB0_rand=[deg2rad(randVal(-0.0466,std2,PathSize)),randVal(0.0017,std2,PathSize),randVal(0.4641,std1,PathSize),deg2rad(randVal(-0.3336,std1,PathSize)),randVal(0.0143,std2,PathSize),deg2rad(randVal(0.9586,std1,PathSize))];
@@ -65,15 +65,15 @@ for i=1:10
     toc
     delta_nominal=[PathRealX(i,:)-PathX;PathRealY(i,:)-PathY;PathRealZ(i,:)-PathZ];
     error_nominal(i,1:PathSize)=sqrt(delta_nominal(1,:).^2+delta_nominal(2,:).^2+delta_nominal(3,:).^2);    
-    delta_cal=[PathRealX(i,:)-PathCalX;PathRealY(i,:)-PathCalY;PathRealZ(i,:)-PathCalZ];
-    error_cal(i,1:PathSize)=sqrt(delta_cal(1,:).^2+delta_cal(2,:).^2+delta_cal(3,:).^2);
+    delta_real=[PathRealX(i,:)-PathrealX;PathRealY(i,:)-PathrealY;PathRealZ(i,:)-PathrealZ];
+    error_real(i,1:PathSize)=sqrt(delta_real(1,:).^2+delta_real(2,:).^2+delta_real(3,:).^2);
 end
 %% check
 error_nominal_mean(1,1:PathSize)=mean(error_nominal(:,1:PathSize));
-error_cal_mean(1,1:PathSize)=mean(error_cal(:,1:PathSize));
+error_real_mean(1,1:PathSize)=mean(error_real(:,1:PathSize));
 % plot(error_nominal_mean)
 % hold on
-% plot(error_cal_mean)
+% plot(error_real_mean)
 
 j=1;
 x_errorbar=1:1:PathSize;
@@ -87,21 +87,21 @@ for i=x_errorbar;
     else
         nom_errorbar(j)=abs(nom_mean-nom_min);
     end
-    cal_min=min(error_cal(:,i));
-    cal_max=max(error_cal(:,i));
-    cal_mean=error_cal_mean(i);
-    cal_std(i)=std(error_cal(:,i));
-    if abs(cal_mean-cal_max)>abs(cal_mean-cal_min)
-        cal_errorbar(j)=abs(cal_mean-cal_max);
+    real_min=min(error_real(:,i));
+    real_max=max(error_real(:,i));
+    real_mean=error_real_mean(i);
+    real_std(i)=std(error_real(:,i));
+    if abs(real_mean-real_max)>abs(real_mean-real_min)
+        real_errorbar(j)=abs(real_mean-real_max);
     else
-        cal_errorbar(j)=abs(cal_mean-cal_min);
+        real_errorbar(j)=abs(real_mean-real_min);
     end
     j=j+1;
 end
 figure
 errorbar(x_errorbar,error_nominal_mean,nom_errorbar)
 hold on
-errorbar(x_errorbar,error_cal_mean,cal_errorbar)
+errorbar(x_errorbar,error_real_mean,real_errorbar)
 title("Odległość od rzeczywistego położenia robota")
 legend('Przed kalibracją','Po kalibracji')
 xlabel("Numer próbki [-]")
@@ -110,5 +110,10 @@ grid on
 axis tight
 sr_blad_nominal=mean(error_nominal_mean)
 sr_odch_stand_nominal=mean(nom_std)
-sr_blad_cal=mean(error_cal_mean)
-sr_odch_stand_cal=mean(cal_std)
+sr_blad_real=mean(error_real_mean)
+sr_odch_stand_real=mean(real_std)
+%% save models for next steps
+figure
+plot(delta_nominal(1,:))
+hold on
+plot(delta_real(1,:))
