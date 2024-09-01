@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 %% lissajous
-PathSize=30;
+PathSize=100;
 t=linspace(0,2*pi,PathSize);
 x=600*sin(t+pi/2);
 y=600*sin(3*t);
@@ -16,8 +16,8 @@ licz1=l2.^2-l1.^2-x.^2-y.^2;
 mian1=4*l1.^2*(x.^2+y.^2)-(l2.^2-l1.^2-x.^2-y.^2).^2;
 th1_1=atan2(-x,y)-atan2(licz1,sqrt(mian1));
 th1_2=atan2(-x,y)-atan2(licz1,-sqrt(mian1));
-th2_1=wrapToPi(atan2(y-l1*sin(th1_1),x-l1*cos(th1_1))-th1_1);
-th2_2=wrapToPi(atan2(y-l1*sin(th1_2),x-l1*cos(th1_2))-th1_2);
+th2_1=atan2(y-l1*sin(th1_1),x-l1*cos(th1_1))-th1_1;
+th2_2=atan2(y-l1*sin(th1_2),x-l1*cos(th1_2))-th1_2;
 %% test
 th1_1=unwrap(th1_1);
 th1_2=unwrap(th1_2);
