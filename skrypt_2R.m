@@ -7,18 +7,18 @@ th2=0;
 [PosX,PosY,PosZ]=model_nominal2R(th1,th2,1);
 %% errors
 % przypadek 1
-errorB0=[deg2rad(-0.466),0,0.4641,deg2rad(0),0.0143,0];  % dth dz dx dalfa dy dfi  
-error01=[deg2rad(0.0549),0,0.851,deg2rad(0),0,0];
-error12=[deg2rad(-0.8206),0,0.7131,deg2rad(0),0,0];
+% errorB0=[deg2rad(-0.466),0,0.4641,deg2rad(0),0.0143,0];  % dth dz dx dalfa dy dfi  
+% error01=[deg2rad(0.0549),0,0.851,deg2rad(0),0,0];
+% error12=[deg2rad(-0.8206),0,0.7131,deg2rad(0),0,0];
 % przypadek 2
 % errorB0=[deg2rad(0),0,0,deg2rad(0),0,0];  % dth dz dx dalfa dy dfi  
 % error01=[deg2rad(0.042),0,0,deg2rad(0),0,0];
 % error12=[deg2rad(1.186),0,0,deg2rad(0),0,0];
 % przypadek 3
-% errorB0=[deg2rad(0.105),0,0.12,deg2rad(0),0,0];  % dth dz dx dalfa dy dfi  
-% error01=[deg2rad(-0.156),0,-0.729,deg2rad(0),0,0];
-% error12=[deg2rad(-1.192),0,0.229,deg2rad(0),0,0];
-%% model skalibrowany
+errorB0=[deg2rad(0.105),0,0.12,deg2rad(0),0,0];  % dth dz dx dalfa dy dfi  
+error01=[deg2rad(-0.156),0,-0.729,deg2rad(0),0,0];
+error12=[deg2rad(-1.192),0,0.229,deg2rad(0),0,0];
+%% modelrzeczywisty
 [PosrealX,PosrealY,PosrealZ]=model_real2R(th1,th2,1,errorB0,error01,error12);
 delta_x=PosrealX-PosX;
 delta_y=PosrealY-PosY;
@@ -40,17 +40,17 @@ std2=0.005;
 for i=1:10
     tic
     % przypadek 1
-    errorB0_rand=[deg2rad(randVal(-0.466,std1,PathSize)),zeros(PathSize,1),randVal(0.4641,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
-    error01_rand=[deg2rad(randVal(0.0549,std2,PathSize)),zeros(PathSize,1),randVal(0.851,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
-    error12_rand=[deg2rad(randVal(-0.8206,std1,PathSize)),zeros(PathSize,1),randVal(0.7131,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),];
+%     errorB0_rand=[deg2rad(randVal(-0.466,std1,PathSize)),zeros(PathSize,1),randVal(0.4641,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error01_rand=[deg2rad(randVal(0.0549,std2,PathSize)),zeros(PathSize,1),randVal(0.851,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+%     error12_rand=[deg2rad(randVal(-0.8206,std1,PathSize)),zeros(PathSize,1),randVal(0.7131,0.03,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),];
     % przypadek 2
 %     errorB0_rand=[zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
 %     error01_rand=[deg2rad(randVal(0.042,std2,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
 %     error12_rand=[deg2rad(randVal(1.186,std1,PathSize)),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1),];
 %     przypadek 3
-%     errorB0_rand=[deg2rad(randVal(0.105,std1,PathSize)),zeros(PathSize,1),randVal(0.12,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
-%     error01_rand=[deg2rad(randVal(-0.156,std1,PathSize)),zeros(PathSize,1),randVal(-0.729,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
-%     error12_rand=[deg2rad(randVal(-1.192,std1,PathSize)),zeros(PathSize,1),randVal(0.229,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+    errorB0_rand=[deg2rad(randVal(0.105,std1,PathSize)),zeros(PathSize,1),randVal(0.12,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+    error01_rand=[deg2rad(randVal(-0.156,std1,PathSize)),zeros(PathSize,1),randVal(-0.729,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
+    error12_rand=[deg2rad(randVal(-1.192,std1,PathSize)),zeros(PathSize,1),randVal(0.229,std1,PathSize),zeros(PathSize,1),zeros(PathSize,1),zeros(PathSize,1)];
     [PathRealX(i,:),PathRealY(i,:),PathRealZ(i,:)]=path_2R(th1_path,th2_path,errorB0_rand,error01_rand,error12_rand);
     delta_nominal=[PathRealX(i,:)-PathX;PathRealY(i,:)-PathY;PathRealZ(i,:)-PathZ];
     error_nominal(i,1:PathSize)=sqrt(delta_nominal(1,:).^2+delta_nominal(2,:).^2+delta_nominal(3,:).^2);
@@ -90,7 +90,7 @@ X_real(1,:)=mean(PathRealX);
 Y_real(1,:)=mean(PathRealY);
 Z_real(1,:)=mean(PathRealZ);
 save("RealVal.mat","X_real","Y_real","Z_real");
-x0=[0,0,0,0,0,0];   %th1 a1 th2 a2 th0 a0
+x0=[0,0,0,0];   %th1 a1 th2 a2 th0 a0
 parametr=lsqnonlin(@myfun,x0);
 x1=parametr(1);
 x2=parametr(2);
@@ -99,13 +99,14 @@ x4=parametr(4);     % this shit is good i think
 % x01=parametr(5);
 % x02=parametr(6);
 [CalX,CalY,CalZ,Tn]=model_cal2R(th1_path,th2_path,500,400,x1,x2,x3,x4);
+% i think it's not needed
 [th1_c,th2_c]=invCalKin(CalX,CalY,x1,x2,x3,x4);
 [PathCalX,PathCalY,PathCalZ]=model_real2R(th1_c,th2_c,PathSize,errorB0,error01,error12);
 % plot(PathCalX,PathCalY)
 % delta_cal=[PathCalX-PathrealX;PathCalY-PathrealY];
 % error_cal(1,:)=sqrt(delta_cal(1,:).^2+delta_cal(2,:).^2)
 for i=1:10
-    delta_cal=[PathRealX(i,:)-PathCalX;PathRealY(i,:)-PathCalY;PathRealZ(i,:)-PathCalZ];
+    delta_cal=[PathRealX(i,:)-CalX;PathRealY(i,:)-CalY;PathRealZ(i,:)-CalZ];
     error_cal(i,1:PathSize)=sqrt(delta_cal(1,:).^2+delta_cal(2,:).^2+delta_cal(3,:).^2);
 end
 %%
@@ -129,7 +130,7 @@ figure
 plot(PathX,PathY)
 hold on
 plot(PathrealX,PathrealY)
-plot(PathCalX,PathCalY)
+plot(CalX,CalY)
 legend('nominal','real','calibration')
 %% wykresy
 figure

@@ -29,12 +29,10 @@ plot(X,Y)
 figure
 plot(t,rad2deg(th1_1))
 hold on
-plot(t,rad2deg(th1_2))
-hold on
-figure
+% plot(t,rad2deg(th1_2))
 plot(t,rad2deg(th2_1))
 hold on
-plot(t,rad2deg(th2_2))
+% plot(t,rad2deg(th2_2))
 axis tight
 grid on
 xlabel("Czas [s]")

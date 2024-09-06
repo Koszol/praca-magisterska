@@ -10,13 +10,14 @@ function [PosX,PosY,PosZ] = path_3R(th1Val,th2Val,th3Val,errorB0,error01,error12
     a3=0.2e3;
     d1=0.3e3;
     d4=0.3e3;
+    r=sqrt(a3.^2+d4.^2);
     TB0=mTr(errorB0_1,errorB0_2,errorB0_3,errorB0_4,errorB0_5,errorB0_6);
     T01=mTr(th1+error01_1,d1+error01_2,a1+error01_3,-pi/2+error01_4,error01_5,error01_6);
     T12=mTr(th2+error12_1,error12_2,a2+error12_3,error12_4,error12_5,error12_6);
-    T23=mTr(th3+error23_1,error23_2,error23_3,error23_4,error23_5,error23_6);
-    T3_12=mTr(pi/2,0,-a3,pi/2,0,0);
-    T34=mTr(error34_1,d4+error34_2,error34_3,error34_4,error34_5,error34_6);
-    T0n=TB0*T01*T12*T23*T3_12*T34;
+    T23=mTr(th3+error23_1,error23_2,r+error23_3,pi/2+error23_4,error23_5,error23_6);
+%     T3_12=mTr(pi/2,0,-a3,pi/2,0,0);
+%     T34=mTr(error34_1,d4+error34_2,error34_3,error34_4,error34_5,error34_6);
+    T0n=TB0*T01*T12*T23;
     Results=double(subs(T0n(1:3,4),{th1,th2,th3,errorB0_1,errorB0_2,errorB0_3,errorB0_4,errorB0_5,errorB0_6,...
         error01_1,error01_2,error01_3,error01_4,error01_5,error01_6,...
         error12_1,error12_2,error12_3,error12_4,error12_5,error12_6,...
