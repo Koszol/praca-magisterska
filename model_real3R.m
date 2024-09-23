@@ -1,4 +1,4 @@
-function [PosX,PosY,PosZ] = model_real3R(th1Val,th2Val,th3Val,len,errorB0,error01,error12,error23,error34)
+function [PosX,PosY,PosZ] = model_real3R(th1Val,th2Val,th3Val,len,errorB0,error01,error12,error23)
     syms th1 th2 th3
 %     th1_val=th1Val;
 %     th2_val=th2Val;

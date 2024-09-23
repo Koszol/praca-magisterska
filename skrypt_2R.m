@@ -33,6 +33,8 @@ PathSize=length(th1_path);
 [PathrealX(1:PathSize),PathrealY(1:PathSize),PathrealZ(1:PathSize)]=model_real2R(th1_path,th2_path,PathSize,errorB0,error01,error12);
 %% normally distributed random errors 
 % dth dz dx dalfa dy dfi
+% std1=0.1;
+% std2=0.01;
 std1=0.03;
 std2=0.005;
 % std.*randn(1,PathSize)+mean
@@ -136,7 +138,7 @@ legend('nominal','real','calibration')
 figure
 errorbar(x_errorbar,error_nominal_mean,nom_errorbar)
 hold on
-errorbar(x_errorbar,error_real_mean,real_errorbar)
+% errorbar(x_errorbar,error_real_mean,real_errorbar)
 errorbar(x_errorbar,error_cal_mean,cal_errorbar)
 title("Odległość od rzeczywistego położenia robota")
 legend('Model nominalny','Model skalibrowany')
@@ -146,6 +148,8 @@ grid on
 axis tight
 sr_blad_nominal=mean(error_nominal_mean)
 sr_odch_stand_nominal=mean(nom_std)
+sr_blad_cal=mean(error_cal_mean)
+sr_odch_stand_cal=mean(cal_std)
 sr_blad_real=mean(error_real_mean)
 sr_odch_stand_real=mean(real_std)
 

@@ -14,10 +14,10 @@ zmie=[1,0,0,0;1,0,0,0;1,0,0,0];
 Tra=A1*A2*A3;
 T0n=zam(zmie,Tra,'th')
 %% test case
-PathSize=30;
+PathSize=50;
 t=linspace(0,2*pi,PathSize);
-x=700*sin(t+pi/2);
-y=700*sin(3*t);
+x=500*sin(t+pi/2);
+y=500*sin(3*t);
 z=linspace(200,400,PathSize);
 % x=100+1000*cos(pi/4); y=0; z=300+1000*cos(pi/4);
 a1=100; d1=300; a2=500;
